@@ -1,20 +1,22 @@
-// must be in HTTPS
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-  console.log('starting');
-	noStroke();
-  // get position once
-  if (!navigator.geolocation) {
-    alert("navigator.geolocation is not available");
-  }
-  navigator.geolocation.getCurrentPosition(setPos);
+var myMap;
+var canvas;
+var mappa = new Mappa("Leaflet");
+var options = {
+  lat: 0,
+  lng: 0,
+  zoom: 4,
+  style: "http://{s}.tile.osm.org/{z}/{x}/{y}.png"
 }
 
-function setPos(position) {
-  var lat = position.coords.latitude;
-  var lng = position.coords.longitude;
-  background(0);
-  fill(255);
-  textSize(32);
-  text("Current position: " + nf(lat,2,2) + " " + nf(lng,2,2), 10, height/2);
+
+function setup() {
+  canvas = createCanvas(windowWidth,windowHeight);
+
+  myMap = mappa.tileMap(options);
+  myMap.overlay(canvas);
+}
+
+function draw() {
+  var polimi = myMap.latLngtoPixel(poliLat,poliLon);
+  ellipse(polimi.x, polimi.y, 30);
 }
